@@ -1,13 +1,11 @@
-// ConfirmDeletePopup.jsx
 import React from "react";
 
 const ConfirmDeletePopup = ({ isOpen, onConfirm, onCancel, itemType }) => {
-
+  
   if (!isOpen) return null;
 
   return (
-    <div
-    >
+    <div className="fixed inset-x-0 top-5 mx-auto bg-slate-100 shadow-lg rounded-lg p-4 w-1/4 z-50">
       <p className="text-gray-800 mb-4">
         Bạn có chắc chắn muốn xóa {itemType} này không?
       </p>
