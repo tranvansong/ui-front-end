@@ -59,13 +59,21 @@ const ProductDetailsPage = () => {
     console.log("Buy Now clicked with quantity:", quantity);
     console.log("Selected Size:", selectedSize);
     console.log("Selected color:", selectedColor);
+    if (!selectedColor || !selectedSize) {
+      toast.error("Vui lòng chọn size và màu");
+      return;
+    }
+    if (user == null) {
+      toast.error("Bạn cần đăng nhập mới thêm được giỏ hàng");
+      return;
+    }
 
     const totalPrice = product.price * quantity;
 
     const cart = {
       userId: user?.userId,
       totalPrice: totalPrice,
-      cartItems: {
+      cartItems: [{
         productId: product.id,
         productName: product.name,
         imageUrl: selectedColor?.images?.[0]?.image || "",
@@ -73,7 +81,7 @@ const ProductDetailsPage = () => {
         size: selectedSize,
         quantity: quantity,
         price: product.price,
-      },
+      }]
     };
 
     navigate("/check-out", { state: { cart } });
@@ -305,7 +313,9 @@ const ProductDetailsPage = () => {
               </button>
               <ToastContainer position="top-right" autoClose={1000} />
             </div>
-            <button className="bg-blue-500 cursor-pointer rounded-lg transition-all duration-300 text-white text-lg font-semibold border-2 border-white px-7 py-3 hover:bg-white hover:text-blue-500 hover:border-blue-500">
+            <button className="bg-blue-500 cursor-pointer rounded-lg transition-all duration-300 text-white text-lg font-semibold border-2 border-white px-7 py-3 hover:bg-white hover:text-blue-500 hover:border-blue-500"
+            onClick={handleBuyNow}
+            >
               Mua ngay
             </button>
           </div>
