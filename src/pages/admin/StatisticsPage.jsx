@@ -19,33 +19,55 @@ const StatisticsPage = () => {
       try {
         const data = await getAllOrders();
         setOrders(data);
-        console.log(data)
-        const years = Array.from(
+        let years = Array.from(
           new Set(
             data
               .map((order) => {
                 const date = new Date(order.orderDate);
                 return isNaN(date.getTime()) ? null : date.getFullYear();
               })
-              .filter((year) => year !== null) // Loại bỏ các giá trị null
+              .filter((year) => year !== null)
           )
         );
-        console.log(years)
-        setAvailableYears(years);
+        
+        if (!years.includes(new Date().getFullYear())) {
+          years.push(new Date().getFullYear());
+        }
+        setAvailableYears(years);        
 
       } catch (error) {
         console.error('Lỗi khi tải đơn hàng:', error);
       }
     };
     fetchOrders();
-  }, []);
+  }, [selectedYear]);
 
-  // Lọc dữ liệu theo năm
+  const normalizeDate = (rawDate) => {
+    if (!rawDate) return null;
+  
+    const parts = rawDate.split(" "); // Tách giờ và ngày
+    if (parts.length !== 2) return null;
+  
+    const [time, date] = parts; // [HH:mm:ss, dd/MM/yyyy]
+    const dateParts = date.split("/"); // Tách ngày, tháng, năm
+  
+    if (dateParts.length !== 3) return null;
+  
+    const [day, month, year] = dateParts; // dd, MM, yyyy
+    return `${year}-${month}-${day}T${time}`; // Chuẩn hóa thành YYYY-MM-DDTHH:mm:ss
+  };
+  
   const filteredOrders = orders.filter((order) => {
-    const orderYear = new Date(order.orderDate).getFullYear();
+    const normalizedDate = normalizeDate(order.orderDate);
+    const orderYear = new Date(normalizedDate).getFullYear();
+    console.log(orderYear + " " + selectedYear);
+    // console.log(selectedYear);
+    // console.log(order.status)
     return orderYear === selectedYear && order.status === "DELIVERED";
   });
 
+  console.log(availableYears)
+  console.log(filteredOrders);
   // Tính tổng doanh thu và số đơn hàng
   const totalRevenue = filteredOrders.reduce(
     (sum, order) => sum + order.totalPayment,

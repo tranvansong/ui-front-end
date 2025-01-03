@@ -60,7 +60,7 @@ const CartContent = () => {
       ),
     };
     setCart(updatedCart);
-    updateCartOnServer(updatedCart); // Gửi cập nhật
+    updateCartOnServer(updatedCart);
   };
 
   const changeSize = (cartItemId, newSize) => {
@@ -224,7 +224,6 @@ const CartContent = () => {
                     userId: cart?.userId,
                     totalPrice: cart?.totalPrice,
                     cartItems: cart?.cartItemsResponse?.map((item) => {
-                      // Tìm color dựa vào colorId
                       const color = item.product.colors.find((c) => c.id === item.colorId);
                       
                       return {

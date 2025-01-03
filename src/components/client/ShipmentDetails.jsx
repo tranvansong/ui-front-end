@@ -12,6 +12,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 import { emptyCart } from "../../api/carts/cart";
+import { CircularProgress } from "@mui/material";
 
 function ShipmentDetails({ cart }) {
   const { user } = useAuth();
@@ -30,6 +31,8 @@ function ShipmentDetails({ cart }) {
   const [shippingMethod, setShippingMethod] = useState("");
   const [paymentMethod, setPaymentMethod] = useState("");
   const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(false);
+
   const navigate = useNavigate();
 
   const formatNumber = (value) => {
@@ -41,6 +44,7 @@ function ShipmentDetails({ cart }) {
   };
 
   const validateForm = () => {
+    setLoading(false);
     const newErrors = {};
     if (!name) newErrors.name = "Tên là bắt buộc";
     if (!phone) {
@@ -71,8 +75,9 @@ function ShipmentDetails({ cart }) {
 
   const handleCompleteOrder = async (e) => {
     e.preventDefault();
-
+    
     if (validateForm()) {
+      setLoading(true);
 
       const orderItemRequests = cart.cartItems.map(
         ({ cartItemId, ...item }) => item
@@ -117,8 +122,10 @@ function ShipmentDetails({ cart }) {
             console.error("Unknown payment method");
         }
       } catch (error) {
-        toast.error(error.data.message);
+        toast.error(error.data);
         console.error("Error creating order: ", error);
+      } finally {
+        setLoading(false); // Kết thúc quá trình đặt hàng
       }
     }
   };
@@ -127,7 +134,7 @@ function ShipmentDetails({ cart }) {
     <div className="my-12 px-10 flex gap-10">
       <div className="w-1/2">
         <div className="text-2xl font-bold px-5 py-3 bg-slate-100">
-          Shipment Information
+          Thông tin khách hàng
         </div>
         <UserInfoForm
           name={name}
@@ -144,7 +151,7 @@ function ShipmentDetails({ cart }) {
         />
         <div>
           <div className="text-xl font-bold px-5 py-3 bg-slate-100 mt-5">
-            Shipping Methods
+            Phương thức vận chuyển
           </div>
           <div className="flex justify-between items-center pt-5">
             <div className="text-lg flex gap-x-2 items-center">
@@ -193,7 +200,7 @@ function ShipmentDetails({ cart }) {
         </div>
         <div className="mt-8">
           <div className="text-xl font-bold px-5 py-3 bg-slate-100 mt-5">
-            Payment Methods
+            Phương thức thanh toán
           </div>
           <div className="flex justify-between items-center pt-5">
             <div className="text-lg flex gap-x-2 items-center">
@@ -253,7 +260,7 @@ function ShipmentDetails({ cart }) {
 
       <div className="w-1/2 bg-slate-100 h-1/2 rounded p-8">
         <div className="text-2xl font-bold pb-2 border-b border-gray-300">
-          Order Summary
+          Đơn hàng
         </div>
         <div className="max-h-72 overflow-y-auto mt-5">
           {cart.cartItems.map((item) => (
@@ -296,8 +303,13 @@ function ShipmentDetails({ cart }) {
         <button
           className="mt-20 w-full uppercase font-bold text-xl bg-red-500 p-5 text-white text-center hover:text-white"
           onClick={handleCompleteOrder}
+          disabled={loading} 
         >
-          Đặt hàng
+          {loading ? (
+          <CircularProgress size={24} color="inherit" />
+        ) : (
+          "Đặt hàng"
+        )}
         </button>
       </div>
       <ToastContainer position="top-right" autoClose={1000} />

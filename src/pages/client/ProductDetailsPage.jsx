@@ -13,6 +13,7 @@ import { addToCart } from "../../api/carts/cart";
 import { useAuth } from "../../context/client/AuthContext";
 import { deleteReview, submitReview } from "../../api/product/review";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import { useNavigate } from "react-router-dom";
 
 const ProductDetailsPage = () => {
   const [product, setProduct] = useState(null);
@@ -27,6 +28,8 @@ const ProductDetailsPage = () => {
   const sizes = ["XS", "S", "M", "L", "XL", "2XL"];
   const { id } = useParams();
   const { user } = useAuth();
+  const navigate = useNavigate();
+
   useEffect(() => {
     const fetchProduct = async () => {
       try {
@@ -55,6 +58,25 @@ const ProductDetailsPage = () => {
   const handleBuyNow = () => {
     console.log("Buy Now clicked with quantity:", quantity);
     console.log("Selected Size:", selectedSize);
+    console.log("Selected color:", selectedColor);
+
+    const totalPrice = product.price * quantity;
+
+    const cart = {
+      userId: user?.userId,
+      totalPrice: totalPrice,
+      cartItems: {
+        productId: product.id,
+        productName: product.name,
+        imageUrl: selectedColor?.images?.[0]?.image || "",
+        color: selectedColor?.color || "",
+        size: selectedSize,
+        quantity: quantity,
+        price: product.price,
+      },
+    };
+
+    navigate("/check-out", { state: { cart } });
   };
 
   const handleAddToCart = async () => {
@@ -98,7 +120,7 @@ const ProductDetailsPage = () => {
   const handleSubmitReview = async (e) => {
     e.preventDefault();
     if (user === null) {
-      toast.error("Bạn cần đăng nhập để đánh giá")
+      toast.error("Bạn cần đăng nhập để đánh giá");
       return;
     }
 
@@ -143,7 +165,7 @@ const ProductDetailsPage = () => {
 
   const hideEmailPrefix = (email) => {
     const parts = email.split("@");
-    const hiddenPart = parts[0].slice(0, 2) + "*****"; // Ẩn phần đầu email
+    const hiddenPart = parts[0].slice(0, 2) + "*****";
     return `${hiddenPart}@${parts[1]}`;
   };
 

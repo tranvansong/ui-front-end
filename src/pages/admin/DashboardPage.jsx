@@ -7,7 +7,7 @@ import ViewInArIcon from "@mui/icons-material/ViewInAr";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import ShoppingBagOutlinedIcon from "@mui/icons-material/ShoppingBagOutlined";
 import PeopleAltOutlinedIcon from "@mui/icons-material/PeopleAltOutlined";
-import { getProducts } from "../../api/product/product";
+import { getProducts, getProductsLowQuantity } from "../../api/product/product";
 import { getAllAccounts } from "../../api/users/user";
 import { getAllOrders } from "../../api/order/order";
 
@@ -21,8 +21,9 @@ const DashboardPage = () => {
   const [lowStockProducts, setLowStockProducts] = useState([]);
   const [pendingOrders, setPendingOrders] = useState(0);
   const [monthlyRevenue, setMonthlyRevenue] = useState([]);
-  const currentYear = new Date().getFullYear();
 
+  const currentYear = new Date().getFullYear();
+  console.log(currentYear)
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -30,15 +31,13 @@ const DashboardPage = () => {
         const productsResponse = await getProducts();
         if (productsResponse) {
           setTotalProduct(productsResponse.length);
-          
-          const lowStock = productsResponse.filter(
-            (product) => product.stock_quantity < 10
-          );
-          setLowStockProducts(lowStock);
         } else {
           setTotalProduct(0);
         }
-        
+
+        const productsLowQuantity = await getProductsLowQuantity();
+        setLowStockProducts(productsLowQuantity);
+
         // Gọi API lấy tài khoản người dùng
         const accountsResponse = await getAllAccounts();
         if (accountsResponse) {
@@ -46,30 +45,31 @@ const DashboardPage = () => {
         } else {
           setTotalUser(0);
         }
-  
+
         // Gọi API lấy đơn hàng
         const ordersResponse = await getAllOrders();
         if (ordersResponse) {
           setTotalOrder(ordersResponse.length);
-  
-          const { revenueByMonth, orderQuantityByMonth, totalRevenue } = calculateYearlyStats(ordersResponse, currentYear);
+
+          const { revenueByMonth, orderQuantityByMonth, totalRevenue } =
+            calculateYearlyStats(ordersResponse, currentYear);
           setMonthlyRevenue(revenueByMonth);
           setTotalRevenue(totalRevenue);
-  
-          const pending = ordersResponse.filter(order => order.status === "PENDING").length;
+
+          const pending = ordersResponse.filter(
+            (order) => order.status === "PENDING"
+          ).length;
           setPendingOrders(pending);
         } else {
           setTotalOrder(0);
         }
-        
       } catch (error) {
         toast.error("Đã xảy ra lỗi khi tải dữ liệu");
       }
     };
-  
+
     fetchData();
   }, [currentYear]);
-  
 
   const calculateYearlyStats = (orders, selectedYear) => {
     const filteredOrders = orders.filter((order) => {
@@ -108,7 +108,7 @@ const DashboardPage = () => {
         <main className="flex-1 overflow-y-auto p-6 space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
             <StatisticCard
-              title="Thu nhập"
+              title={`Thu nhập ${currentYear}`}
               value={totalRevenue}
               icon={<AttachMoneyIcon />}
             />
@@ -135,11 +135,28 @@ const DashboardPage = () => {
               <h2 className="text-xl font-semibold mb-4">Thông báo</h2>
               <ul>
                 <li className="mb-2">
-                  <span className="font-medium">Sản phẩm sắp hết hàng:</span>{" "}
-                  <span className="text-red-600 font-bold text-xl">
-                    {lowStockProducts.length}
-                  </span>{" "}
-                  sản phẩm
+                  <div>
+                    <span className="font-medium">Sản phẩm sắp hết hàng:</span>{" "}
+                    <span className="text-red-600 font-bold text-xl">
+                      {lowStockProducts.length}
+                    </span>{" "}
+                    sản phẩm
+                  </div>
+                  <div className="my-4">
+                    <ul>
+                      {lowStockProducts.map((product) => (
+                        <li
+                          key={product.id}
+                          className="list-disc ml-4 mb-2">
+                          <div>
+                            <p className="font-medium text-sm">
+                              {product.name}
+                            </p>
+                          </div>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
                 </li>
                 <li className="mb-2">
                   <span className="font-medium">Đơn hàng chờ xác nhận:</span>{" "}

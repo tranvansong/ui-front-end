@@ -88,3 +88,12 @@ export const updateProduct = async (id, productRequest) => {
     throw error.response;
   }
 };
+
+export const getProductsLowQuantity = async () => {
+  try {
+    const response = await apiClient.get(`/products/low-quantity`);
+    return response.data;
+  } catch (error) {
+    throw error.response;
+  }
+}

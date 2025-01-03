@@ -6,7 +6,7 @@ const UserInfoForm = ({ name, setName, phone, setPhone, email, setEmail, address
     <div className="shipment-info">
       <input    
         type="text"
-        placeholder="Name"
+        placeholder="Tên người nhận"
         value={name}
         onChange={(e) => setName(e.target.value)}
         className="p-2 border border-gray-200 text-base w-full shadow mt-5 outline-none focus:border-bluelight"
@@ -15,7 +15,7 @@ const UserInfoForm = ({ name, setName, phone, setPhone, email, setEmail, address
 
       <input
         type="text"
-        placeholder="Phone number"
+        placeholder="Số điện thoại"
         value={phone}
         onChange={(e) => setPhone(e.target.value)}
         className="p-2 border border-gray-200 text-base w-full shadow mt-5 outline-none focus:border-bluelight"
@@ -33,7 +33,7 @@ const UserInfoForm = ({ name, setName, phone, setPhone, email, setEmail, address
 
       <input
         type="text"
-        placeholder="Address"
+        placeholder="Số nhà, thôn, xóm"
         value={address}
         onChange={(e) => setAddress(e.target.value)}
         className="p-2 border border-gray-200 text-base w-full shadow mt-5 outline-none focus:border-bluelight"

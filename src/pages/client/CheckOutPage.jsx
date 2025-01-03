@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import Header from "../../components/client/Header";
 import Footer from "../../components/client/Footer";
 import { useLocation } from "react-router-dom";
-import Test from "../../components/client/Test";
 import ShipmentDetails from "../../components/client/ShipmentDetails";
 
 const CheckOutPage = () => {
