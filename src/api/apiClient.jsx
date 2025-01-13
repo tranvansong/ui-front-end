@@ -8,7 +8,6 @@ const apiClient = axios.create({
 apiClient.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("token");
-    // Chỉ thêm token cho các URL cần xác thực
     const protectedUrls = [
       "/carts",
       "/users/me",

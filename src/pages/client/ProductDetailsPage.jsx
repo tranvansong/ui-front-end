@@ -35,9 +35,9 @@ const ProductDetailsPage = () => {
       try {
         const response = await getProductById(id);
         console.log(response);
-        setProduct(response); // Lưu thông tin sản phẩm vào state
+        setProduct(response);
         if (response.colors && response.colors.length > 0) {
-          setSelectedColor(response.colors[0]); // Chọn màu đầu tiên mặc định
+          setSelectedColor(response.colors[0]);
         }
       } catch (error) {
         console.error("Error fetching product:", error);
@@ -110,9 +110,9 @@ const ProductDetailsPage = () => {
     } catch (error) {
       alert(error.message);
     }
-    setTimeout(() => {
-      window.location.reload();
-    }, 1000);
+    // setTimeout(() => {
+    //   window.location.reload();
+    // }, 1000);
     console.log("Item to add to cart:", cartItem);
   };
 
@@ -150,7 +150,7 @@ const ProductDetailsPage = () => {
       toast.success("Cảm ơn bạn đã gửi đánh giá!");
 
       const response = await getProductById(product.id);
-      setProduct(response); // Cập nhật lại state sản phẩm với dữ liệu mới
+      setProduct(response);
       setReviewText("");
       setRating("");
       setShowReviewForm(false);
@@ -242,16 +242,16 @@ const ProductDetailsPage = () => {
                 const matchingVariant = selectedColor?.variants.find(
                   (variant) => variant.size === size
                 );
-
+                console.log(matchingVariant)
                 const isDisabled =
-                  !matchingVariant || matchingVariant.stock_quantity === 0;
+                  !matchingVariant || matchingVariant.stockQuantity === 0;
 
                 return (
                   <div
                     key={size}
                     className={`p-2 border rounded cursor-pointer ${
                       selectedSize === size ? "bg-blue-500 text-white" : ""
-                    } ${isDisabled ? "bg-gray-300 cursor-not-allowed" : ""}`} // Áp dụng background xám nếu size không hợp lệ
+                    } ${isDisabled ? "bg-gray-300 cursor-not-allowed" : ""}`}
                     onClick={() =>
                       !isDisabled && handleSizeSelect(size, matchingVariant)
                     } // Không chọn nếu bị disable

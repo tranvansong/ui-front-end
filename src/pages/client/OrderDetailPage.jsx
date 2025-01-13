@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import Header from "../../components/client/Header";
 import Footer from "../../components/client/Footer";
 import { cancelOrder, getOrderByOrderCode } from "../../api/order/order";
@@ -139,7 +139,9 @@ const OrderDetailPage = () => {
               <strong>Phương thức thanh toán:</strong> {orderMethod}
             </p>
             <p>
-              <strong>Phương thức vận chuyển:</strong> {shippingMethod}
+              <strong>Phương thức vận chuyển:</strong> <span>
+              {shippingMethod == "standard" ? "Tiêu chuẩn" : "Hỏa tốc"}
+              </span>
             </p>
             <p>
               <strong>Ngày đặt:</strong> {orderDate}
@@ -187,7 +189,7 @@ const OrderDetailPage = () => {
                     />
                   </td>
                   <td className="border border-gray-300 p-2">
-                    {item.productName}
+                    <Link to={`/product-detail/${item.productId}`}>{item.productName}</Link>
                   </td>
                   <td className="border border-gray-300 p-2">{item.color}</td>
                   <td className="border border-gray-300 p-2">{item.size}</td>

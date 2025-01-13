@@ -75,7 +75,7 @@ function ShipmentDetails({ cart }) {
 
   const handleCompleteOrder = async (e) => {
     e.preventDefault();
-    
+
     if (validateForm()) {
       setLoading(true);
 
@@ -219,7 +219,7 @@ function ShipmentDetails({ cart }) {
             </div>
           </div>
 
-          <div className="flex justify-between items-center pt-5">
+          <div className="flex justify-between items-center pt-5 opacity-50 pointer-events-none">
             <div className="text-lg flex gap-x-2 items-center">
               <input
                 id="qr-radio"
@@ -227,7 +227,7 @@ function ShipmentDetails({ cart }) {
                 value="qr"
                 name="payment-method"
                 className="w-4 h-4 accent-black text-black bg-gray-100 border-gray-300 rounded"
-                onChange={(e) => setPaymentMethod(e.target.value)}
+                disabled
               />
               <label htmlFor="qr-radio" className="ms-3 text-gray-900">
                 <span className="mx-2">VNPay QR</span>
@@ -236,7 +236,7 @@ function ShipmentDetails({ cart }) {
             </div>
           </div>
 
-          <div className="flex justify-between items-center pt-5">
+          <div className="flex justify-between items-center pt-5 opacity-50 pointer-events-none">
             <div className="text-lg flex gap-x-2 items-center">
               <input
                 id="credit-radio"
@@ -244,7 +244,7 @@ function ShipmentDetails({ cart }) {
                 value="credit"
                 name="payment-method"
                 className="w-4 h-4 accent-black text-black bg-gray-100 border-gray-300 rounded"
-                onChange={(e) => setPaymentMethod(e.target.value)}
+                disabled
               />
               <label htmlFor="credit-radio" className="ms-3 text-gray-900">
                 <span className="mx-2">Thẻ tín dụng</span>
@@ -303,13 +303,13 @@ function ShipmentDetails({ cart }) {
         <button
           className="mt-20 w-full uppercase font-bold text-xl bg-red-500 p-5 text-white text-center hover:text-white"
           onClick={handleCompleteOrder}
-          disabled={loading} 
+          disabled={loading}
         >
           {loading ? (
-          <CircularProgress size={24} color="inherit" />
-        ) : (
-          "Đặt hàng"
-        )}
+            <CircularProgress size={24} color="inherit" />
+          ) : (
+            "Đặt hàng"
+          )}
         </button>
       </div>
       <ToastContainer position="top-right" autoClose={1000} />

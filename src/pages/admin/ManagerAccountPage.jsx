@@ -50,7 +50,7 @@ const ManagerAccountPage = () => {
       await deteteUserInfo(selectedAccountId);
       toast.success("Xóa tài khoản thành công");
     } catch (error) {
-      alert(error.data);
+      // alert(error.data);
     }
     setAccounts(accounts.filter((account) => account.id !== selectedAccountId));
     setIsConfirmDeleteOpen(false);

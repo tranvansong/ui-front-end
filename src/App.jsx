@@ -12,7 +12,7 @@ function App() {
         <ClientRoutes />
         <AdminRoutes />
       </AuthProvider>
-      <LiveChat/>
+      {/* <LiveChat/> */}
     </Router>
   );
 }

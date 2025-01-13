@@ -10,6 +10,7 @@ import PeopleAltOutlinedIcon from "@mui/icons-material/PeopleAltOutlined";
 import { getProducts, getProductsLowQuantity } from "../../api/product/product";
 import { getAllAccounts } from "../../api/users/user";
 import { getAllOrders } from "../../api/order/order";
+import { Link } from "react-router-dom";
 
 const DashboardPage = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -149,9 +150,9 @@ const DashboardPage = () => {
                           key={product.id}
                           className="list-disc ml-4 mb-2">
                           <div>
-                            <p className="font-medium text-sm">
+                            <Link to={`/admin/products/update/${product.id}`} className="font-medium text-sm">
                               {product.name}
-                            </p>
+                            </Link>
                           </div>
                         </li>
                       ))}

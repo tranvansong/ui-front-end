@@ -134,9 +134,9 @@ const Header = () => {
             <LocalMallOutlinedIcon
               style={{ fontSize: "30px", color: "black" }}
             />
-            <span className="absolute animate-bounce right-0 top-1 w-4 h-4 place-content-center text-center rounded-full bg-yellow text-xs">
+            {/* <span className="absolute animate-bounce right-0 top-1 w-4 h-4 place-content-center text-center rounded-full bg-yellow text-xs">
               {cartLength}
-            </span>
+            </span> */}
           </Link>
 
           {user ? (

@@ -174,7 +174,6 @@ const UpdateProductFormPage = () => {
       return;
     }
 
-    // Nếu không trùng, tiến hành thay đổi màu
     const newColors = colors.map((color, index) =>
       index === colorIndex
         ? { ...color, colorId: value, dropdownOpen: false } // Đóng dropdown sau khi chọn
@@ -262,7 +261,7 @@ const UpdateProductFormPage = () => {
       try {
         const imageUrls = [];
         const imageData = new FormData();
-        // Upload từng ảnh và lưu URL
+
         for (const color of colors) {
           for (const image of color.images) {
             if (image.file) {
@@ -302,7 +301,7 @@ const UpdateProductFormPage = () => {
         toast.error(error);
         console.error(error);
       } finally {
-        setIsLoading(false); // Kết thúc xử lý, ẩn loading
+        setIsLoading(false);
       }
     }
   };

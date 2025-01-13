@@ -18,6 +18,7 @@ import UnknownPage from "./pages/UnknowPage";
 import { OrderHistoryPage } from "./pages/client/OrderHistoryPage";
 import { OrderSuccessPage } from "./pages/client/OrderSuccessPage";
 import OrderDetailPage from "./pages/client/OrderDetailPage";
+import ContactPage from "./pages/client/ContactPage";
 
 const ClientRoutes = () => (
   <>
@@ -32,7 +33,7 @@ const ClientRoutes = () => (
       <Route path="/register" element={<RegisterPage />} />
       <Route path="/forgot-password" element={<ForgotPasswordPage />} />
       <Route path="/reset-password" element={<ResetPasswordPage />} />
-      <Route path="/contact" element={<HomePage />} />
+      <Route path="/contact" element={<ContactPage />} />
       <Route
         path="/cart"
         element={

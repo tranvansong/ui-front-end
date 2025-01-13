@@ -238,10 +238,10 @@ const FormProductPage = () => {
         }
 
       } catch (error) {
-        toast.error(error.data.message);
+        // toast.error(error.data.message);
         console.error(error);
       } finally {
-        setIsLoading(false); // Kết thúc xử lý, ẩn loading
+        setIsLoading(false);
       }
 
     }
